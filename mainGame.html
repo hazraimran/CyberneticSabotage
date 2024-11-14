@@ -5,6 +5,19 @@
     <link rel="stylesheet" href="styles.css" />
   </head>
 
+  <style>
+    #endGame{
+      background-color: red;
+      color: white;
+      border-color: white;
+      transition: color .3s linear,background-color .3s linear,border-color .3s linear;
+    }
+    #endGame:hover{
+      background-color: white;
+      color:red;
+      border-color: white;
+    }
+  </style>
   <body>
     <div class="container">
       <div class="main-panel">
@@ -48,6 +61,7 @@
             <button id="restart-button">Restart</button>
             <button type="hint" id="hint-button">Hint</button>
             <button id="settings-button">Settings</button>
+            <button id="endGame" onclick="endGame()">EndGame</button>
           </div>
 
           <div id="sound-modal" class="modal">
@@ -80,28 +94,27 @@
             </tr>
             <tr>
               <td>Employee</td>
-              <td>EmployeeID, Name, Job Role, Division, Last Login Time</td>
+              <td>EmployeeID, Name, JobRole, Department, LastLoginTime</td>
             </tr>
             <tr>
               <td>Robot</td>
               <td>
-                RobotID, Model, Manufacturing Date, Status, Update Date, Last
-                Updated By
+                RobotID, Model, ManufDate, Status, lastUpdateOn, LastUpdatedByEmpID
               </td>
             </tr>
             <tr>
               <td>Log</td>
               <td>
-                LogID, EmployeeID, Action Description, Timestamp, Robot ID
+                LogID, EmployeeID, ActionDesc, Timestamp, RobotID
               </td>
             </tr>
             <tr>
               <td>Incident</td>
-              <td>IncidentID, Description, Timestamp, RobotID, Reported By</td>
+              <td>IncidentID, Desc, Timestamp, RobotID, Reported By</td>
             </tr>
             <tr>
-              <td>Access_Code</td>
-              <td>Access Code, EmployeeID, Access Level, Last Access</td>
+              <td>AccessCode</td>
+              <td>AccessCode, EmployeeID, AccessLevel, LastAccess</td>
             </tr>
           </table>
 

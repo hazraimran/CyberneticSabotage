@@ -12,6 +12,7 @@ const hintContainer = document.getElementById('modal-content')
 const progressBar = document.getElementById('progress-bar')
 const progressText = document.getElementById('progress-text')
 const scoreText = document.getElementById('score')
+const endButton = document.getElementById('endGame');
 
 let queryHistory = []
 let currentQueryIndex = 0
@@ -153,13 +154,38 @@ function restartGame () {
 }
 
 function startGame () {
-  startTime = Date.now()
-  score = 150
+  startTime = Date.now();
+  let score = localStorage.getItem('score');
+
+  // Check if score is null or undefined, and set it to 150 if so
+  if (score > 150) {
+     score = parseInt(score,10);
+  } else {
+      score=150;
+      score = parseInt(score, 10); // Convert score back to a number if it's stored as a string
+  }
+  correctQueriesSolved= parseInt(localStorage.getItem('totalQueriesSolved') ?? 0,10);
+  if(correctQueriesSolved > 0){
+  }else{
+    correctQueriesSolved=0;
+    correctQueriesSolved=parseInt(correctQueriesSolved,10);
+  }
+  scoreText.textContent='Score: '+score;
+  document.getElementById('correct-queries').textContent = 'Q: ' + (correctQueriesSolved) + ' / 12';
+  currentQueryIndex=correctQueriesSolved??0;
+  nextQueryIndex=currentQueryIndex??0;
+  const nextQuery = queries[nextQueryIndex]
+  storyline.textContent = 'Excellent! Next, ' + nextQuery
   progress = 10
   setInterval(updateTimer, 1000)
   initializeDB()
-  updateProgressBar(0)
+  updateProgressBar(correctQueriesSolved*8)
 }
+
+function endGame(){
+  location.assign('endScreen.html?gameStatus='+score);
+}
+
 
 function getStory () {
   const nextQueryIndex = currentQueryIndex + 1
@@ -184,23 +210,22 @@ function getStory () {
     }
   }
 }
-
+let timeElapsed = 0;
 function updateTimer () {
   const now = Date.now()
-  const timeElapsed = Math.round((now - startTime) / 1000)
+   timeElapsed = Math.round((now - startTime) / 1000)
   document.getElementById('timer').textContent = 'Time: ' + timeElapsed + 's'
 }
-
 function updateScore (change) {
   score = score + change
   scoreText.textContent = 'Score: ' + score
 
-  document.getElementById('correct-queries').textContent = 'Q: ' + correctQueriesSolved + ' / 12'
+  document.getElementById('correct-queries').textContent = 'Q: ' + (correctQueriesSolved+1) + ' / 12'
 
   if (change > 0 && soundEnabled) {
     const correctSound = document.getElementById('correct-sound')
     correctSound.currentTime = 0
-    correctSound.play()
+    correctSound.play();
   }
 
   if (change < 0 && soundEnabled) {
@@ -236,6 +261,7 @@ function updateProgressBar (change) {
 restartButton.addEventListener('click', restartGame)
 
 function validateForm () {
+
   const x = document.forms['query-input']['query-input-box'].value
   if (x === '') {
     return false
@@ -269,7 +295,7 @@ form.addEventListener('submit', function (event) {
   event.preventDefault()
   const queryWrapper = document.createElement('div')
   const queryParagraph = document.createElement('p')
-
+  const x = document.forms['query-input']['query-input-box'].value;
   if (!validateForm()) {
     queryParagraph.textContent = 'Empty Query Provided'
     console.log('query Paragraph')
@@ -284,20 +310,24 @@ form.addEventListener('submit', function (event) {
     textarea.value = ''
     scrollToBottom()
     executeQuery(query, queryHistory.length - 1, queryWrapper)
-    getStory()
+    getStory()  
     displayText.appendChild(queryWrapper)
     scrollToBottom()
   }
-})
 
+  // add push to database over here
+  submitUserData(localStorage.getItem('user'), currentQueryIndex, timeElapsed, hintsUsed,x,flag,score)
+})
+let hintsUsed =0;
 function getHint () {
   const hintIndex = currentQueryIndex
   const hintArray = hints[hintIndex]
+  hintsUsed++;
   subArrayLength = hintArray.length
 
   if (hintCounter < subArrayLength) {
     const hint = hintArray[hintCounter]
-    storyline.textContent = hint
+    storyline.textContent ="HINT~ :"+hint;
     updateScore(-hintPoints[hintCounter])
     hintCounter = hintCounter + 1
   }
@@ -464,4 +494,31 @@ function scrollToBottom () {
   displayText.scrollTop = displayText.scrollHeight
 }
 
-startGame()
+startGame();
+
+async function submitUserData(username, queryIndex, queryTime, hintsUsed, query, isCorrect,score) {
+  if (!username || queryTime === undefined || queryIndex === undefined || hintsUsed === undefined) {
+    console.error('Missing required fields. CLIENT');
+    return;
+  }
+
+  const payload = { username, queryIndex, queryTime, hintsUsed, query, isCorrect,score };
+
+  try {
+    const response = await fetch('http://localhost:3001/submitUserData', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json(); // Capture the response body
+      throw new Error(`Error ${response.status}: ${errorData.error || 'Unknown error'}`);
+    }
+    const data = await response.json();
+  } catch (error) {
+    console.error("Error submitting data:", error);
+    alert("There was a problem submitting your data. Please try again."); // User-friendly message
+  }
+}
+
