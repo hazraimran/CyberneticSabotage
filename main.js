@@ -505,7 +505,7 @@ async function submitUserData(username, queryIndex, queryTime, hintsUsed, query,
   const payload = { username, queryIndex, queryTime, hintsUsed, query, isCorrect,score };
 
   try {
-    const response = await fetch('http://localhost:3001/submitUserData', {
+    const response = await fetch('https://sqlgameserver.onrender.com/submitUserData', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload),
