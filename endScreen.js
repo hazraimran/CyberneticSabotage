@@ -3,7 +3,7 @@ const restartEndButton = document.getElementById('restart-gameover')
 const headerText = document.getElementById('main-text')
 const submitButton = document.getElementById('submitButton');
 
-startPageButton.addEventListener('click', goToMain)
+startPageButton.addEventListener('click',goToMain);
 restartEndButton.addEventListener('click', restart)
 
 const searchParams = new URLSearchParams(window.location.search)
@@ -51,7 +51,7 @@ submitButton.onclick = (e) => {
 
 async function submitRes(usr_res) {
   try {
-    const response = await fetch('http://localhost:3001/submitSurveyResponse', {
+    const response = await fetch('https://sqlgameserver.onrender.com/submitSurveyResponse', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(usr_res),
@@ -62,7 +62,7 @@ async function submitRes(usr_res) {
       throw new Error(`Error ${response.status}: ${errorData.error || 'Unknown error'}`);
       document.getElementById("message").textContent="Error while sending feedback";
     }
-
+    localStorage.clear;
     const data = await response.json();
     console.log("Server response:", data);
   } catch (error) {
