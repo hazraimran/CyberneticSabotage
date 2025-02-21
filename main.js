@@ -12,7 +12,7 @@ const hintContainer = document.getElementById('modal-content')
 const progressBar = document.getElementById('progress-bar')
 const progressText = document.getElementById('progress-text')
 const scoreText = document.getElementById('score')
-const endButton = document.getElementById('endGame');
+const endButton = document.getElementById('end-game');
 
 let queryHistory = []
 let currentQueryIndex = 0
