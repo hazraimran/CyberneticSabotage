@@ -58,6 +58,12 @@
       margin: 0px;
       font-size: 1rem;
     }
+    table{
+      font-size: 1rem;
+    }
+    .table-data-padding{
+      padding: 5px 10px;
+    }
   </style>
   <body>
     <div class="container">
@@ -135,27 +141,27 @@
             </tr>
             <tr>
               <td>Employee</td>
-              <td>EmployeeID, FirstName, LastName, JobTitle, Department, LastLogin</td>
+              <td class="table-data-padding">employeeID, firstName, lastName, jobTitle, department, lastLogin</td>
             </tr>
             <tr>
               <td>Robot</td>
-              <td>
-                RobotID, Model, ManufDate, Status, lastUpdateOn, LastUpdatedByEmpID
+              <td class="table-data-padding">
+                robotID, Model, manufDate, status, lastUpdateOn, lastUpdatedByEmpID
               </td>
             </tr>
             <tr>
               <td>Log</td>
-              <td>
-                LogID, EmployeeID, ActionDesc, Timestamp, RobotID
+              <td class="table-data-padding">
+                logID, actionDesc, timestamp, robotID, employeeID
               </td>
             </tr>
             <tr>
               <td>Incident</td>
-              <td>IncidentID, Desc, Timestamp, RobotID, Reported By</td>
+              <td class="table-data-padding">incidentID, desc, timestamp, reportedBy, robotID</td>
             </tr>
             <tr>
               <td>AccessCode</td>
-              <td>AccessCode, EmployeeID, AccessLevel, LastAccess</td>
+              <td class="table-data-padding">accessCode, accessLevel, lastAccess, employeeID</td>
             </tr>
           </table>
           <div class="inner-box-side">
