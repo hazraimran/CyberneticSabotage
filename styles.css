@@ -1,5 +1,6 @@
 :root {
   --main-color: lime;
+  --secondary-color: green;
 }
 
 body {
@@ -195,6 +196,10 @@ button {
   white-space: pre-wrap;
 }
 
+.secondary-text {
+  color: var(--secondary-color);
+}
+
 .side-panel button:hover {
   background-color: #1a1a1a;
 }
@@ -380,4 +385,20 @@ form label{
   background-color: black;
   color: var(--main-color);
   border: 1px solid var(--main-color);
+}
+
+.center-buttons-actions{
+  justify-content: center !important;
+}
+
+
+.swal2-image {
+  border-radius: 50%;
+  border: 2px solid var(--main-color);
+  box-shadow: 0 0px 50px 0 rgba(0, 0, 0, 0.5);
+}
+
+.swal2-image:hover{
+  transition: all 0.3s ease;
+  box-shadow: 0 0px 20px 0 var(--main-color);
 }
