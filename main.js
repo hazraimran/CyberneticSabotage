@@ -26,18 +26,18 @@ let soundEnabled = true
 let correctQueriesSolved = 0
 
 const queries = [
-  ' Hey Detective! The first task is to list all incidents from the \'Incident\' table.',
-  ' Find the most recent incident involving these models.',
-  ' Find out how many incidents exist in the company for these robot models.',
-  ' Find out how many of these robots have been updated in the past one week. The column name here should be NumberOfUpdatedRobots',
-  ' Find out which all employees have updated these robots recently.',
-  ' Mark the most recently updated robots as "under repair" in the database and display the robot table.',
-  ' Identify the employee who reported the highest number of incidents.',
-  ' Create a view that joins the \'Incident\' and \'Robot\' table to see all incidents associated with each robot model. Display the view.',
-  ' Identify the source of the malfunctions by finding models of robots that have more than 2 incidents.',
-  ' Create a new table called \'Repair\'  with columns repairID (INTEGER), repairStatus(TEXT), desc (TEXT), robotID (TEXT) and repairedById (TEXT)',
-  ' Insert repair records for the table in this row form :(1, \'Under Repair\', \'This robot model is undergoing repair due to its defaulty patterns\', 5 , 7).',
-  ' Find the last employee who updated the software of the malfunctioning robots.'
+  " Detective, your first mission is to retrieve all reported incidents from the 'Incident' database. Let's see what we're dealing with!",
+  " Great job! Now, let's track down the most recent incident. Find the latest reported case from the 'Incident' table. Make sure to return all its details.",
+  " We're onto something! Count the number of incidents reported for each robot model. Return the robot model and the number of incidents as 'IncidentCount'.",
+  " Time to check our system updates. Count how many robots have been updated in the past week (Assume today is 2023-07-24). Return this count as 'NumberOfUpdatedRobots'.",
+  " Who's been fixing our robots? Identify employees who recently updated any robots within the past week. We want to know their employee ID, first name, and last name (Assume today is 2023-07-24).",
+  " Some robots need urgent repairs! Mark the recently updated robots as 'Under Repair' and then display all robot details (Assume today is 2023-07-24).",
+  " Who's our top whistleblower? Find the employee who has the most robot update records. Display the result with column names 'employeeID' and 'NumberOfIncidents' respectively.",
+  " Let's compile all the evidence. Create a view that connects the 'Incident' and 'Robot' tables, showing all incidents related to each robot model. Include the robot ID, model, employee who last updated it, incident ID, incident description, incident timestamp, and the name of the employee responsible for the update. Then, display the view.",
+  " Let's uncover the problematic robot models! Find all models that have been involved in more than 2 incidents. Return only the model names.",
+  " We need a repair log! Create a 'Repair' table with columns for repair ID((INTEGER), repairStatus (TEXT), desc(TEXT), robotID(TEXT),  and the employee who performed the repair as and repairedById (TEXT)",
+  " Time to record a repair case. Insert a new repair record with the given details into the 'Repair' table.",
+  " Who last worked on the faulty robots? Identify the most recent employee who updated the software of malfunctioning robots. Return their employee ID, first name, last name, the timestamp of the last update, and the robot ID they updated."
 ]
 storyline.textContent = queries[0]
 
@@ -132,6 +132,25 @@ const answerKeys = [
     [1, 'Thomas', 'Anderson', '2022-06-12 10:25:00', 4]
   ]
 ]
+
+const whiteRabbitConfiguration = {
+  imageUrl: "images/white-rabbit.png",
+  imageWidth: 200,
+  imageHeight: 200,
+  background : "linear-gradient(to right, #000, green)",
+  color: "white",
+  confirmButtonText: "Yes",
+  showCancelButton: true,
+  cancelButtonText: "No",
+  confirmButtonColor: "var(--secondary-color)",
+  cancelButtonColor: "black",
+  cancelButtonTextColor: "var(--main-color)",
+  customClass: {
+    actions: 'center-buttons-actions',
+  },
+  toast: true,
+}
+
 
 const hintPoints = [40, 60, 80]
 let db
@@ -326,10 +345,9 @@ function getHint () {
   subArrayLength = hintArray.length
 
   if (hintCounter < subArrayLength) {
-    const hint = hintArray[hintCounter]
-    storyline.textContent ="HINT~ :"+hint;
     updateScore(-hintPoints[hintCounter])
     hintCounter = hintCounter + 1
+    return hintArray
   }
 }
 
@@ -338,21 +356,47 @@ const modal = document.getElementById('hint-modal')
 const spanClose = document.getElementsByClassName('close')[0]
 
 hintButton.onclick = function () {
-  modal.style.display = 'block'
-  yesButton.style.display = 'inline'
-  noButton.style.display = 'inline'
-  okayButton.style.display = 'none'
+
   if (hintCounter !== subArrayLength) {
-    hintContainer.textContent = 'Hint : For hint # ' +
-  (hintCounter + 1) +
-  ' for this problem, it\'s going to cost you ' +
-   hintPoints[hintCounter] +
-   ' points. Click "Yes" to use it or "No" to cancel'
+    Swal.fire({
+    title: 'Hire White Rabbit Hacker',
+    ...whiteRabbitConfiguration,
+    html: `Hint : For hint # ${hintCounter + 1} for this problem, it's going to cost you ${hintPoints[hintCounter]} points. Click "Yes" to use it or "No" to cancel`,
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const hint_array = getHint()
+        const formatted_hint = hint_array.slice(0, hintCounter).map((hint, index) => {
+          if (hintCounter-1 === index) {
+            return `<span style="color: white;">${index + 1}. ${hint}</span>`
+          } else {
+            return `<span style="color: gray;">${index + 1}. ${hint}</span>`
+          }
+        }).join('<hr>')
+
+        Swal.fire({
+          title: '', 
+          html: formatted_hint,
+          ...whiteRabbitConfiguration,
+          showCancelButton: false,
+          confirmButtonText: "Got It",
+        })
+      }
+    })
   } else {
-    yesButton.style.display = 'none'
-    noButton.style.display = 'none'
-    okayButton.style.display = 'inline'
-    hintContainer.textContent = 'Sorry! No more hints are availabe for this question.'
+    Swal.fire({
+      title: 'White Rabit Wants To Help',
+      text: 'I have infiltrated the database and found the answer to your question. Im sending it to you now.',
+      ...whiteRabbitConfiguration,
+      timer: 10000,
+      timerProgressBar: true,
+      showCancelButton: false,
+      confirmButtonText: "Got It",
+      toast: true,
+
+    }).then(() => {
+      flag = true
+      getStory()
+    })
   }
 }
 
