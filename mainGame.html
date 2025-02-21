@@ -17,6 +17,47 @@
       color:red;
       border-color: white;
     }
+    .inner-box-side{
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .chat-container{
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+    }
+    .trini-image{
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: 2px solid var(--main-color);
+      box-shadow: 0px 0px 10px 10px rgba(229, 223, 223, 0.5);
+    }
+    .trini-image:hover{
+      transition: all 0.3s ease;
+      box-shadow: 0px 0px 10px 10px  var(--main-color);
+    }
+    .chat-image{
+      display: flex;
+      opacity: 0.8;
+      flex-direction: column;
+      justify-content: center;
+      margin: 20px;
+    }
+    .chat-content{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      text-align: left;
+    }
+    .chat-message{
+      font-size: 0.8rem;
+    }
+    .chat-header h3{
+      margin: 0px;
+      font-size: 1rem;
+    }
   </style>
   <body>
     <div class="container">
@@ -117,10 +158,20 @@
               <td>AccessCode, EmployeeID, AccessLevel, LastAccess</td>
             </tr>
           </table>
-
           <div class="inner-box-side">
-            <h3>Trinity</h3>
-            <p id="trinity-text">Trinity Speech Text</p>
+            <div class="chat-container">
+              <div class="chat-image">
+                <img class="trini-image" src="images/trini.png" alt="Trini">
+              </div>
+              <div class="chat-content">
+                <div class="chat-header">
+                  <h3>Trinity</h3>
+                </div>
+                <div class="chat-message">
+                  <p id="trinity-text">Trinity Speech Text</p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -134,6 +185,8 @@
       src="audio/mixkit-failure-arcade-alert-notification-240.wav"
     ></audio>
     <script src="sql-wasm.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="main.js" type="text/javascript"></script>
+
   </body>
 </html>
