@@ -194,7 +194,7 @@ function startGame () {
   currentQueryIndex=correctQueriesSolved??0;
   nextQueryIndex=currentQueryIndex??0;
   const nextQuery = queries[nextQueryIndex]
-  storyline.textContent = 'Excellent! Next, ' + nextQuery
+  storyline.textContent = nextQuery
   progress = 10
   setInterval(updateTimer, 1000)
   initializeDB()
@@ -213,7 +213,7 @@ function getStory () {
       location.assign('endScreen.html?gameStatus=win')
     } else {
       const nextQuery = queries[nextQueryIndex]
-      storyline.textContent = 'Excellent! Next, ' + nextQuery
+      storyline.textContent = nextQuery
       hintCounter = 0
       currentQueryIndex = nextQueryIndex
       updateScore(100)

@@ -45,95 +45,54 @@ setInterval(draw, 33)
 async function startGame() {
   let username = document.getElementById("username").value;
   let password = document.getElementById("pass").value;
+
+  
   if(username == ""||password == ""){
     alert("Please enter username and password to Proceed!!!");
-  }else{
+    return;
+  }
+
   localStorage.setItem("user",username);
-    let totalQueriesSolved=0;
-    try{
-      let data= await checkUser(username,password);
-      isVerified=data.isVerified;
-      totalQueriesSolved=data.user.totalQueriesSolved;
-      localStorage.setItem("totalQueriesSolved",data.user.totalQueriesSolved);
-      localStorage.setItem("score",data.user.score);
-    }
-    catch(err){
-      console.error("Error submitting data:", err);
-    }
-    if(isVerified==true){
-      if(totalQueriesSolved>0){
-          setTimeout(() => {
-            fetch('mainGame.html')
-              .then(response => response.text())
-              .then(data => {
-                document.body.innerHTML = data
+  let totalQueriesSolved=0;
 
-                const SQLscript = document.createElement('script')
-                SQLscript.src = 'sql-wasm.js'
-                document.body.appendChild(SQLscript)
-                SQLscript.onload = () => {
-                  const script = document.createElement('script')
-                  script.src = 'main.js'
-                  document.body.appendChild(script)
-                  script.onload = () => {
-                    const newFadeToBlackDiv = document.createElement('div')
-                    newFadeToBlackDiv.id = 'fade-to-black'
-                    newFadeToBlackDiv.style.position = 'fixed'
-                    newFadeToBlackDiv.style.top = '0'
-                    newFadeToBlackDiv.style.left = '0'
-                    newFadeToBlackDiv.style.width = '100%'
-                    newFadeToBlackDiv.style.height = '100%'
-                    newFadeToBlackDiv.style.backgroundColor = 'black'
-                    newFadeToBlackDiv.style.transition = 'opacity 1s'
-                    newFadeToBlackDiv.style.visibility = 'visible'
-                    newFadeToBlackDiv.style.opacity = '1'
-                    document.body.appendChild(newFadeToBlackDiv)
+  try{
+    let data= await checkUser(username,password);
+    isVerified=data.isVerified;
+    totalQueriesSolved=data.user?.totalQueriesSolved || 0;
+    localStorage.setItem("totalQueriesSolved",totalQueriesSolved);
+    localStorage.setItem("score",data.user?.score || 0);
+  } catch(err){
+    console.error("Error submitting data:", err);
+  }
 
-                    setTimeout(() => {
-                      newFadeToBlackDiv.style.opacity = '0'
-                    }, 1000)
+  
 
-                    setTimeout(() => {
-                      newFadeToBlackDiv.style.visibility = 'hidden'
-                    }, 2000)
-                  }
-                }
-              })
-              .catch(error => console.error('Error:', error))
-          }, 1000)
-        
-      }else{
-        fetch("storyScreen.html")
-        .then(response => response.text())
-        .then(data => {
-          document.body.innerHTML = data
-          const script = document.createElement("script")
-          script.src = "storyScript.js"
-          document.body.appendChild(script)
-        })
-        .catch(error => console.error("Error:", error))
-      }
-    }else{
-      document.getElementById('warning').classList.remove('hidden');
+  if(isVerified){
+    if(totalQueriesSolved>0){
+       window.location.href = "mainGame.html";
+    } else{
+      window.location.href = "storyScreen.html";
     }
+  }else{
+    document.getElementById('warning').classList.remove('hidden');
+  }
 }
 
-    async function checkUser(username,password){
-    try{
-      const response = await fetch(`https://sqlgameserver.onrender.com/getUser?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-    });
+async function checkUser(username,password){
+  try{
+    const response = await fetch(`https://sqlgameserver.onrender.com/getUser?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json(); // Capture the response body
-      throw new Error(`Error ${response.status}: ${errorData.error || 'Unknown error'}`);
-    }
-    const data = await response.json();
-    return data;
-  }catch(error){
-    console.error("Error submitting data:", error);
-    alert("There was a problem submitting your data. Please try again.");
-    }
+  if (!response.ok) {
+    const errorData = await response.json(); // Capture the response body
+    throw new Error(`Error ${response.status}: ${errorData.error || 'Unknown error'}`);
+  }
+  const data = await response.json();
+  return data;
+}catch(error){
+  console.error("Error submitting data:", error);
+  alert("There was a problem submitting your data. Please try again.");
   }
 }
