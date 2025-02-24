@@ -62,6 +62,22 @@ async function startGame(type) {
     return;
   }
 
+  Swal.fire({
+    icon: 'info',
+    toast: true,
+    title: 'Loading...',
+    background: '#000',
+    width: '300px',
+    color: '#fff',
+    text: 'Robotech is verifying your data...',
+    allowOutsideClick: false,
+    showConfirmButton: false,
+    didOpen: () => {
+      Swal.showLoading();
+    }
+  })
+
+
   try{
     const userFactory = new UserFactory(username,password, type);
     await userFactory.initializeUserInstance();
