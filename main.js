@@ -219,7 +219,9 @@ function startGame () {
 }
 
 function endGame(){
-  location.assign('endScreen.html?gameStatus='+score);
+  
+  localStorage.clear();
+  window.location.href = "index.html";
 }
 
 
@@ -242,7 +244,25 @@ function getStory () {
     storyline.textContent = 'Oops! Please try again.' + currentQuery
     updateScore(-10)
     if (score <= 0) {
-      location.assign('endScreen.html?gameStatus=lose')
+      Swal.fire({
+        title: 'Game Over',
+        text: 'RoboTech has fallen. Would you like to try again?',
+        icon: 'error',
+        background: '#000',
+        color: '#fff',
+        confirmButtonText: 'OK',
+        showCancelButton: true,
+        cancelButtonText: 'No',
+        confirmButtonColor: 'var(--secondary-color)',
+        cancelButtonColor: 'black',
+        cancelButtonTextColor: 'var(--main-color)',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          restartGame();
+        } else {
+          endGame();
+        }
+      })
     }
   }
 }
