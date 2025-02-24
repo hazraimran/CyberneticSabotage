@@ -25,6 +25,12 @@ let subArrayLength
 let soundEnabled = true
 let correctQueriesSolved = 0
 
+const agentName = localStorage.getItem('user')
+
+if(!agentName){
+  window.location.href = "index.html"
+}
+
 const queries = [
   " Detective, your first mission is to retrieve all reported incidents from the 'Incident' database. Let's see what we're dealing with!",
   " Great job! Now, let's track down the most recent incident. Find the latest reported case from the 'Incident' table. Make sure to return all its details.",
