@@ -224,8 +224,10 @@ function endGame(){
   window.location.href = "index.html";
 }
 
-
-function getStory () {
+/**
+ * @param {boolean} increaseScore If false, the score will not be increased
+ */
+function getStory (increaseScore = true) {
   const nextQueryIndex = currentQueryIndex + 1
   if (flag === true && nextQueryIndex <= queries.length) {
     if (nextQueryIndex === queries.length) {
@@ -235,7 +237,9 @@ function getStory () {
       storyline.textContent = nextQuery
       hintCounter = 0
       currentQueryIndex = nextQueryIndex
-      updateScore(100)
+      if (increaseScore) {
+        updateScore(100)
+      }
       updateProgressBar(8)
       correctQueriesSolved++
     }
@@ -402,7 +406,7 @@ hintButton.onclick = function () {
 
   if (hintCounter !== subArrayLength) {
     Swal.fire({
-    title: 'Hire White Rabbit Hacker',
+    title: 'Would you like to hire White Rabbit?',
     ...whiteRabbitConfiguration,
     html: `Hint : For hint # ${hintCounter + 1} for this problem, it's going to cost you ${hintPoints[hintCounter]} points. Click "Yes" to use it or "No" to cancel`,
     }).then((result) => {
@@ -438,7 +442,7 @@ hintButton.onclick = function () {
 
     }).then(() => {
       flag = true
-      getStory()
+      getStory(false)
     })
   }
 }
