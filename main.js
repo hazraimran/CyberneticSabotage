@@ -315,24 +315,30 @@ form.addEventListener('submit', function (event) {
   const queryWrapper = document.createElement('div')
   const queryParagraph = document.createElement('p')
   const x = document.forms['query-input']['query-input-box'].value;
+  const query = textarea.value
+
+  // Always append queryWrapper to displayText first since it's needed in all cases
+  displayText.appendChild(queryWrapper)
+
   if (!validateForm()) {
-    queryParagraph.textContent = 'Empty Query Provided'
-    console.log('query Paragraph')
-    queryWrapper.appendChild(queryParagraph)
-    displayText.appendChild(queryWrapper)
-    scrollToBottom()
+    displayError(queryWrapper, 'Empty Query Provided')
+  } else if (!isValidSQLQuery(query)) {
+    displayError(queryWrapper, 'Invalid SQL Query Syntax: ' + query)
   } else {
-    const query = textarea.value
     queryHistory.push(query)
     queryParagraph.textContent = query
     queryWrapper.appendChild(queryParagraph)
-    textarea.value = ''
-    scrollToBottom()
+    
+    // Execute query and update UI
     executeQuery(query, queryHistory.length - 1, queryWrapper)
-    getStory()  
-    displayText.appendChild(queryWrapper)
-    scrollToBottom()
+    getStory()
+    
+    // Clear textarea after successful query
+    textarea.value = ''
   }
+
+  // Scroll to bottom once at the end
+  scrollToBottom()
 
   // add push to database over here
   submitUserData(localStorage.getItem('user'), currentQueryIndex, timeElapsed, hintsUsed,x,flag,score)
