@@ -172,9 +172,20 @@ function restartGame () {
   hintContainer.textContent = hints[0][0]
 }
 
+
+function getAgentName(){
+  const agentName = localStorage.getItem('user');
+  if(agentName){
+    return agentName.charAt(0).toUpperCase() + agentName.slice(1);
+  }
+  return 'Phoenix';
+}
+
 function startGame () {
   startTime = Date.now();
   let score = localStorage.getItem('score');
+  let agentName = getAgentName();
+  document.getElementById('agent-name-display').textContent = agentName;
 
   // Check if score is null or undefined, and set it to 150 if so
   if (score > 150) {
