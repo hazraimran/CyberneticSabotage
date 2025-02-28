@@ -21,7 +21,7 @@ const sceneText = [['The Digital Age',
   ['Navigating the Labyrinth',
   'Each database is a labyrinth, with secrets locked behind SQL challenges. Crack them, and your score soars. But be cautious: errors will deplete your score, and the deeper you go, the more intricate the queries become. While hints can light your way, they bear a cost. Use them wisely.'],
   ['Allies in Code',
-  'Yet, in this digital expanse, you\'re not isolated. Trinity, an advanced AI ally, stands by your side. Gleaming at the screen\'s corner, she\'s your beacon amidst the data storms, offering clues and guidance. But heed this: leaning on Trinity too much might drain your score faster than you anticipate.'],
+  'Yet, in this digital expanse, you\'re not isolated. Triny, an advanced AI ally, stands by your side. Gleaming at the screen\'s corner, she\'s your beacon amidst the data storms, offering clues and guidance. But heed this: leaning on Triny too much might drain your score faster than you anticipate.'],
   ['The Future of RoboTech Global',
     'The future of RoboTech Global, and perhaps the digital world at large, hinges on your prowess. Beyond each SQL challenge lies a fragment of the truth. Can you piece together the mystery, or will you be consumed by the endless streams of data? Dive in, Cipher, and let the digital hunt begin!'],
   ['','']
