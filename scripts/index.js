@@ -119,9 +119,10 @@ async function checkUser(username,password){
 
 async function registerUser(username,password){
   try{
-    const response = await fetch(`${EXTERNAL_API}/registerUser?username=${encodeURIComponent(username)}&password=${encodeURIComponent(password)}`, {
+    const response = await fetch(`${EXTERNAL_API}/register`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
     });
 
     if (!response.ok) {
