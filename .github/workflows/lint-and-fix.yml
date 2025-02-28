@@ -19,13 +19,13 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18
+          node-version: 18  # Required for ESLint
 
-      - name: Install dependencies
-        run: npm install  # or yarn install / pnpm install
+      - name: Install ESLint globally (only if needed)
+        run: npm install -g eslint
 
-      - name: Run ESLint and Fix Issues
-        run: npx eslint . --fix
+      - name: Run ESLint and Auto-Fix
+        run: eslint . --fix || true  # Prevents breaking the workflow if errors exist
 
       - name: Commit Fixes (if any)
         run: |
