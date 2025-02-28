@@ -226,8 +226,9 @@ function endGame(){
 
 /**
  * @param {boolean} increaseScore If false, the score will not be increased
+ * @param {string} query The query that was executed
  */
-function getStory (increaseScore = true) {
+function getStory (increaseScore = true, query = '') {
   const nextQueryIndex = currentQueryIndex + 1
   if (flag === true && nextQueryIndex <= queries.length) {
     if (nextQueryIndex === queries.length) {
@@ -245,8 +246,12 @@ function getStory (increaseScore = true) {
     }
   } else {
     const currentQuery = queries[currentQueryIndex]
-    storyline.textContent = 'Oops! Please try again.' + currentQuery
-    updateScore(-10)
+    
+    if (!isSelectQuery(query)) {
+      storyline.textContent = 'Oops! Please try again.' + currentQuery
+      updateScore(-10)
+    }
+
     if (score <= 0) {
       Swal.fire({
         title: 'Game Over',
@@ -372,7 +377,7 @@ form.addEventListener('submit', function (event) {
     
     // Execute query and update UI
     executeQuery(query, queryHistory.length - 1, queryWrapper)
-    getStory()
+    getStory(true, query)
     
     // Clear textarea after successful query
     textarea.value = ''

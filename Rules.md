@@ -70,6 +70,11 @@ This document outlines the rules and validation logic used in the Query Validato
    - Numeric values are parsed and compared as floats
    - String values are compared directly
 
+4. SELECT queries for searching tables (not deducting points)
+   - Queries must start with "SELECT"
+   - Other SQL keywords are not allowed
+   - Example: "SELECT * FROM employees" is valid, "INSERT INTO employees" is invalid
+
 ## Validation Process
 
 1. First pass: Check for empty query

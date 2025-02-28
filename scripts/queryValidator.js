@@ -32,7 +32,7 @@ function isValidSQLQuery(query) {
 
   // Define valid starting keywords for SQL statements
   const sqlKeywords = [
-      "SELECT", "INSERT INTO", "UPDATE", "DELETE FROM", "CREATE TABLE",
+      "SELECT", "INSERT INTO", "UPDATE", "DELETE FROM", "CREATE TABLE", "JOIN",
       "DROP TABLE", "ALTER TABLE", "TRUNCATE TABLE", "REPLACE", "MERGE",
       "WITH", "GRANT", "REVOKE", "EXEC", "CALL", "BEGIN", "COMMIT", 
       "ROLLBACK", "USE", "EXPLAIN"
@@ -62,4 +62,25 @@ function isValidSQLQuery(query) {
   if (forbiddenPatterns.some(pattern => pattern.test(query))) return false;
 
   return true;
+}
+
+/**
+ * Checks if a given query is a valid SELECT statement
+ * 
+ * @param {string} query - The SQL query string to check
+ * @returns {boolean} True if query is a valid SELECT statement, false otherwise
+ */
+function isSelectQuery(query) {
+
+  // Check if query starts with SELECT and doesn't contain other SQL keywords
+  const otherKeywords = [
+      "INSERT", "UPDATE", "DELETE", "CREATE", "DROP", "ALTER", "TRUNCATE",
+      "REPLACE", "MERGE", "WITH", "GRANT", "REVOKE", "EXEC", "CALL", "JOIN",
+      "BEGIN", "COMMIT", "ROLLBACK", "USE", "EXPLAIN"
+  ];
+  
+  const trimmedQuery = query.trim().toUpperCase();
+  if (!trimmedQuery.startsWith("SELECT")) return false;
+  
+  return !otherKeywords.some(keyword => trimmedQuery.includes(keyword));
 }
