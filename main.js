@@ -3,7 +3,7 @@ const textarea = document.querySelector('#query-textarea')
 const displayText = document.querySelector('.display-text')
 const form = document.querySelector('#query-form')
 const restartButton = document.getElementById('restart-button')
-const storyline = document.getElementById('Triny-text')
+const storyline = document.getElementById('triny-text')
 const hintButton = document.getElementById('hint-button')
 const yesButton = document.getElementById('yes')
 const noButton = document.getElementById('no')
@@ -236,6 +236,11 @@ function getStory (increaseScore = true, query = '') {
     } else {
       const nextQuery = queries[nextQueryIndex]
       storyline.textContent = nextQuery
+      storyline.classList.add('chat-message-animation')
+      setTimeout(() => {
+        storyline.classList.remove('chat-message-animation')
+      }, 5000)
+      
       hintCounter = 0
       currentQueryIndex = nextQueryIndex
       if (increaseScore) {
